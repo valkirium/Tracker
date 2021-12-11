@@ -35,6 +35,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+        nodes, err := clientset.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get nodes:", err)
+	}
+
+	for i, node := range nodes.Items {
+		fmt.Printf("[%d] %s\n", i, node.GetName())
+	}
+
 	pods, err := clientset.CoreV1().Pods("").List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln("failed to get pods:", err)
@@ -44,5 +53,4 @@ func main() {
 	for i, pod := range pods.Items {
 		fmt.Printf("[%d] %s\n", i, pod.GetName())
 	}
-
 }
