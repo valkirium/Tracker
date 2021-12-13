@@ -35,22 +35,34 @@ func main() {
 		log.Fatal(err)
 	}
 
-        nodes, err := clientset.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+        nodes, err := clientset.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln("failed to get nodes:", err)
 	}
-
-	for i, node := range nodes.Items {
-		fmt.Printf("[%d] %s\n", i, node.GetName())
+	for _, node := range nodes.Items {
+		fmt.Printf("%s\n", node.Name)
+		for _, condition := range node.Status.Conditions {
+			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
+		}
 	}
+	pods, err := clientset.CoreV1().Pods("kube-system").List(context.TODO(), metav1.ListOptions{})
+        if err != nil {
+                log.Fatalln("failed to get podss:", err)
+        }
+        for _, pod := range pods.Items {
+                fmt.Printf("%s\n", pod.Name)
+                for _, condition := range pod.Status.Conditions {
+                        fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
+                }
+        }
 
-	pods, err := clientset.CoreV1().Pods("").List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		log.Fatalln("failed to get pods:", err)
-	}
 
-	// print pods
-	for i, pod := range pods.Items {
-		fmt.Printf("[%d] %s\n", i, pod.GetName())
-	}
+//	pods, err := clientset.CoreV1().Pods("kube-system").List(context.Background(), metav1.ListOptions{})
+//	if err != nil {
+//		log.Fatalln("failed to get pods:", err)
+//	}
+//	// print pods
+//	for i, pod := range pods.Items {
+//		fmt.Printf("[%d] %s\n", i, pod.GetName())
+//	}
 }
