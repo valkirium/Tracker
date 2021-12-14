@@ -47,14 +47,25 @@ func main() {
 	}
 	pods, err := clientset.CoreV1().Pods("kube-system").List(context.TODO(), metav1.ListOptions{})
         if err != nil {
-                log.Fatalln("failed to get podss:", err)
+                log.Fatalln("failed to get pods:", err)
         }
         for _, pod := range pods.Items {
                 fmt.Printf("%s\n", pod.Name)
                 for _, condition := range pod.Status.Conditions {
                         fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
                 }
+	}
+	Deployments, err := clientset.AppsV1().Deployments("kube-system").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get dps:", err)
         }
+	for _, Deployment := range Deployments.Items {
+		fmt.Printf("%s\n", Deployment.Name)
+                for _, condition := range Deployment.Status.Conditions {
+                        fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
+                }
+
+	}
 
 
 //	pods, err := clientset.CoreV1().Pods("kube-system").List(context.Background(), metav1.ListOptions{})
