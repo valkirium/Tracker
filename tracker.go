@@ -57,7 +57,7 @@ func main() {
 	}
 	Deployments, err := clientset.AppsV1().Deployments("kube-system").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Fatalln("failed to get dps:", err)
+		log.Fatalln("failed to get deployments:", err)
         }
 	for _, Deployment := range Deployments.Items {
 		fmt.Printf("%s\n", Deployment.Name)
@@ -66,14 +66,4 @@ func main() {
                 }
 
 	}
-
-
-//	pods, err := clientset.CoreV1().Pods("kube-system").List(context.Background(), metav1.ListOptions{})
-//	if err != nil {
-//		log.Fatalln("failed to get pods:", err)
-//	}
-//	// print pods
-//	for i, pod := range pods.Items {
-//		fmt.Printf("[%d] %s\n", i, pod.GetName())
-//	}
 }
