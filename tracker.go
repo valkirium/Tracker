@@ -7,7 +7,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-
+//	"time"
+//	appsv1 "k8s.io/api/apps/v1"
+//	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -61,9 +63,28 @@ func main() {
         }
 	for _, Deployment := range Deployments.Items {
 		fmt.Printf("%s\n", Deployment.Name)
-                for _, condition := range Deployment.Status.Conditions {
-                        fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
-                }
-
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", Deployment.Status.ReadyReplicas)
+		fmt.Print("Up to date: ") 
+		fmt.Printf("%d\n", Deployment.Status.UpdatedReplicas) 
+		if Deployment.Status.ReadyReplicas == Deployment.Status.UpdatedReplicas {
+		fmt.Println("Ok")
+		}
 	}
+	DaemonSets, err := clientset.AppsV1().DaemonSets("kube-system").List(context.TODO(), metav1.ListOptions{})
+        if err != nil {
+                log.Fatalln("failed to get daemonset:", err)
+        }
+	for _, DaemonSet := range DaemonSets.Items {
+                fmt.Printf("%s\n", DaemonSet.Name)
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", DaemonSet.Status.NumberReady)
+		fmt.Print("Up to date: ")
+		fmt.Printf("%d\n", DaemonSet.Status.UpdatedNumberScheduled)
+		if  DaemonSet.Status.NumberReady == DaemonSet.Status.UpdatedNumberScheduled {
+		fmt.Println("Ok")
+		}
+	}
+
 }
+
