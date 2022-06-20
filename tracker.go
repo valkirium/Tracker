@@ -53,23 +53,23 @@ func normstat(x, y string) string {
 		for _, condition := range node.Status.Conditions {
 			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
 			if condition.Type == "NetworkUnavailable" && condition.Status == "False" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "MemoryPressure" && condition.Status == "False" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "DiskPressure" && condition.Status == "False" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "PIDPressure" && condition.Status == "False" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "Ready" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			sum = (index + 1) * 5
@@ -85,19 +85,19 @@ func normstat(x, y string) string {
 		for _, condition := range pod.Status.Conditions {
 			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
 			if condition.Type == "Initialized" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "Ready" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "ContainersReady" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "PodScheduled" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			sum += (index + 1) * 4
@@ -114,7 +114,7 @@ func normstat(x, y string) string {
 		fmt.Print("Up to date: ")
 		fmt.Printf("%d\n", Deployment.Status.UpdatedReplicas)
 		if Deployment.Status.ReadyReplicas == Deployment.Status.UpdatedReplicas {
-			fmt.Println("Ok")
+			//fmt.Println("Ok")
 			i++
 		}
 		sum += index + 1
@@ -130,7 +130,7 @@ func normstat(x, y string) string {
 		fmt.Print("Up to date: ")
 		fmt.Printf("%d\n", DaemonSet.Status.UpdatedNumberScheduled)
 		if DaemonSet.Status.NumberReady == DaemonSet.Status.UpdatedNumberScheduled {
-			fmt.Println("Ok")
+			//fmt.Println("Ok")
 			i++
 		}
 		sum += index + 1
@@ -144,19 +144,19 @@ func normstat(x, y string) string {
 		for _, condition := range pod.Status.Conditions {
 			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
 			if condition.Type == "Initialized" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "Ready" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "ContainersReady" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			if condition.Type == "PodScheduled" && condition.Status == "True" {
-				fmt.Println("Ok")
+				//fmt.Println("Ok")
 				i++
 			}
 			sum += (index + 1) * 4
@@ -173,7 +173,7 @@ func normstat(x, y string) string {
 		fmt.Print("Up to date: ")
 		fmt.Printf("%d\n", Deployment.Status.UpdatedReplicas)
 		if Deployment.Status.ReadyReplicas == Deployment.Status.UpdatedReplicas {
-			fmt.Println("Ok")
+			//fmt.Println("Ok")
 			i++
 		}
 		sum += index + 1
