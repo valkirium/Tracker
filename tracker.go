@@ -181,8 +181,10 @@ func normstat(x, y string) string {
 
 	if i == sum {
 		return x
+		fmt.Println("Ok")
 	} else {
 		return y
+		fmt.Println("fail")
 	}
 }
 
