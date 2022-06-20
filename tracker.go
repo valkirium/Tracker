@@ -24,10 +24,10 @@ import (
 func normstat(x, y string) string {
 	var ns string
 	var i int = 0
-	var a int = 0
-	var b int = 0
-	var c int = 0
-	var d int = 0
+	//var a int = 0
+	//var b int = 0
+	//var c int = 0
+	var sum int = 0
 	flag.StringVar(&ns, "namespace", "", "namespace")
 
 	// Bootstrap k8s configuration from local       Kubernetes config file
@@ -72,7 +72,7 @@ func normstat(x, y string) string {
 				fmt.Println("Ok")
 				i++
 			}
-			a = (index + 1) * 5
+			sum = (index + 1) * 5
 		}
 	}
 
@@ -100,7 +100,7 @@ func normstat(x, y string) string {
 				fmt.Println("Ok")
 				i++
 			}
-			b = (index + 1) * 4
+			sum += (index + 1) * 4
 		}
 	}
 	Deployments, err := clientset.AppsV1().Deployments("kube-system").List(context.TODO(), metav1.ListOptions{})
@@ -117,7 +117,7 @@ func normstat(x, y string) string {
 			fmt.Println("Ok")
 			i++
 		}
-		c = index + 1
+		sum += index + 1
 	}
 	DaemonSets, err := clientset.AppsV1().DaemonSets("kube-system").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -133,7 +133,7 @@ func normstat(x, y string) string {
 			fmt.Println("Ok")
 			i++
 		}
-		d = index + 1
+		sum += index + 1
 	}
 	pods, err = clientset.CoreV1().Pods("region-manager").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -159,7 +159,7 @@ func normstat(x, y string) string {
 				fmt.Println("Ok")
 				i++
 			}
-			b = (index + 1) * 4
+			sum += (index + 1) * 4
 		}
 	}
 	Deployments, err = clientset.AppsV1().Deployments("region-manager").List(context.TODO(), metav1.ListOptions{})
@@ -176,10 +176,10 @@ func normstat(x, y string) string {
 			fmt.Println("Ok")
 			i++
 		}
-		c = index + 1
+		sum += index + 1
 	}
 
-	if i == (a + b + c + d) {
+	if i == sum {
 		return x
 	} else {
 		return y
