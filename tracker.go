@@ -14,6 +14,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	//	"golang.org/x/build/kubernetes/api"
 	"k8s.io/client-go/tools/clientcmd"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 )
 
 // This program lists the pods in a cluster equivalent toда
