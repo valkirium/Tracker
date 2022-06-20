@@ -12,9 +12,9 @@ import (
 	//	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 	//	"golang.org/x/build/kubernetes/api"
 	"k8s.io/client-go/tools/clientcmd"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 )
 
 // This program lists the pods in a cluster equivalent toда
@@ -135,6 +135,50 @@ func normstat(x, y string) string {
 		}
 		d = index + 1
 	}
+	pods, err = clientset.CoreV1().Pods("region-manager").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get pods:", err)
+	}
+	for index, pod := range pods.Items {
+		fmt.Printf("%d\t %s\n", index, pod.Name)
+		for _, condition := range pod.Status.Conditions {
+			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
+			if condition.Type == "Initialized" && condition.Status == "True" {
+				fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "Ready" && condition.Status == "True" {
+				fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "ContainersReady" && condition.Status == "True" {
+				fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "PodScheduled" && condition.Status == "True" {
+				fmt.Println("Ok")
+				i++
+			}
+			b = (index + 1) * 4
+		}
+	}
+	Deployments, err = clientset.AppsV1().Deployments("region-manager").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get deployments:", err)
+	}
+	for index, Deployment := range Deployments.Items {
+		fmt.Printf("%d\t %s\n", index, Deployment.Name)
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", Deployment.Status.ReadyReplicas)
+		fmt.Print("Up to date: ")
+		fmt.Printf("%d\n", Deployment.Status.UpdatedReplicas)
+		if Deployment.Status.ReadyReplicas == Deployment.Status.UpdatedReplicas {
+			fmt.Println("Ok")
+			i++
+		}
+		c = index + 1
+	}
+
 	if i == (a + b + c + d) {
 		return x
 	} else {
@@ -142,8 +186,8 @@ func normstat(x, y string) string {
 	}
 }
 
-func main(){
+func main() {
 	var x string = "OK"
-	var y string= "fail"
-	normstat(x,y)
+	var y string = "fail"
+	normstat(x, y)
 }
