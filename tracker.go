@@ -24,9 +24,6 @@ import (
 func normstat(x, y string) string {
 	var ns string
 	var i int = 0
-	//var a int = 0
-	//var b int = 0
-	//var c int = 0
 	var sum int = 0
 	flag.StringVar(&ns, "namespace", "", "namespace")
 
@@ -72,7 +69,7 @@ func normstat(x, y string) string {
 				//fmt.Println("Ok")
 				i++
 			}
-			sum = (index + 1) * 5
+			sum += 5
 		}
 	}
 
@@ -100,8 +97,9 @@ func normstat(x, y string) string {
 				//fmt.Println("Ok")
 				i++
 			}
-			sum += (index + 1) * 4
+
 		}
+		sum += 4
 	}
 	Deployments, err := clientset.AppsV1().Deployments("kube-system").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -117,7 +115,7 @@ func normstat(x, y string) string {
 			//fmt.Println("Ok")
 			i++
 		}
-		sum += index + 1
+		sum += 1
 	}
 	DaemonSets, err := clientset.AppsV1().DaemonSets("kube-system").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -133,7 +131,7 @@ func normstat(x, y string) string {
 			//fmt.Println("Ok")
 			i++
 		}
-		sum += index + 1
+		sum += 1
 	}
 	pods, err = clientset.CoreV1().Pods("region-manager").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -159,7 +157,7 @@ func normstat(x, y string) string {
 				//fmt.Println("Ok")
 				i++
 			}
-			sum += (index + 1) * 4
+			sum += 4
 		}
 	}
 	Deployments, err = clientset.AppsV1().Deployments("region-manager").List(context.TODO(), metav1.ListOptions{})
@@ -176,7 +174,7 @@ func normstat(x, y string) string {
 			//fmt.Println("Ok")
 			i++
 		}
-		sum += index + 1
+		sum += 1
 	}
 
 	if i == sum {
@@ -187,7 +185,6 @@ func normstat(x, y string) string {
 }
 
 func main() {
-	var x string = "OK"
-	var y string = "fail"
-	normstat(x, y)
+	var cloudup = normstat("Ok", "fail")
+	fmt.Println(cloudup)
 }
