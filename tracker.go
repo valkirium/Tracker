@@ -211,6 +211,51 @@ func normstat(x, y string) string {
 		sum += 1
 	}
 
+	Deployments, err = clientset.AppsV1().Deployments("kube-csi-cinder").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get deployments:", err)
+	}
+	for index, Deployment := range Deployments.Items {
+		fmt.Printf("%d\t %s\n", index, Deployment.Name)
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", Deployment.Status.ReadyReplicas)
+		fmt.Print("Up to date: ")
+		fmt.Printf("%d\n", Deployment.Status.UpdatedReplicas)
+		if Deployment.Status.ReadyReplicas == Deployment.Status.UpdatedReplicas {
+			//fmt.Println("Ok")
+			i++
+		}
+		sum += 1
+	}
+
+	pods, err = clientset.CoreV1().Pods("auth-system").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get pods:", err)
+	}
+	for index, pod := range pods.Items {
+		fmt.Printf("%d\t %s\n", index, pod.Name)
+		for _, condition := range pod.Status.Conditions {
+			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
+			if condition.Type == "Initialized" && condition.Status == "True" {
+				//fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "Ready" && condition.Status == "True" {
+				//fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "ContainersReady" && condition.Status == "True" {
+				//fmt.Println("Ok")
+				i++
+			}
+			if condition.Type == "PodScheduled" && condition.Status == "True" {
+				//fmt.Println("Ok")
+				i++
+			}
+		}
+		sum += 4
+	}
+
 	if i == sum {
 		return x
 	} else {
