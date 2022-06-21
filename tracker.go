@@ -69,8 +69,8 @@ func normstat(x, y string) string {
 				//fmt.Println("Ok")
 				i++
 			}
-			sum += 5
 		}
+		sum += 5
 	}
 
 	pods, err := clientset.CoreV1().Pods("kube-system").List(context.TODO(), metav1.ListOptions{})
