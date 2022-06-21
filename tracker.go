@@ -177,6 +177,40 @@ func normstat(x, y string) string {
 		sum += 1
 	}
 
+	DaemonSets, err = clientset.AppsV1().DaemonSets("ingress-nginx").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get daemonset:", err)
+	}
+	for index, DaemonSet := range DaemonSets.Items {
+		fmt.Printf("%d\t %s\n", index, DaemonSet.Name)
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", DaemonSet.Status.NumberReady)
+		fmt.Print("Up to date: ")
+		fmt.Printf("%d\n", DaemonSet.Status.UpdatedNumberScheduled)
+		if DaemonSet.Status.NumberReady == DaemonSet.Status.UpdatedNumberScheduled {
+			//fmt.Println("Ok")
+			i++
+		}
+		sum += 1
+	}
+
+	DaemonSets, err = clientset.AppsV1().DaemonSets("kube-csi-cinder").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		log.Fatalln("failed to get daemonset:", err)
+	}
+	for index, DaemonSet := range DaemonSets.Items {
+		fmt.Printf("%d\t %s\n", index, DaemonSet.Name)
+		fmt.Print("Ready: ")
+		fmt.Printf("%d\n", DaemonSet.Status.NumberReady)
+		fmt.Print("Up to date: ")
+		fmt.Printf("%d\n", DaemonSet.Status.UpdatedNumberScheduled)
+		if DaemonSet.Status.NumberReady == DaemonSet.Status.UpdatedNumberScheduled {
+			//fmt.Println("Ok")
+			i++
+		}
+		sum += 1
+	}
+
 	if i == sum {
 		return x
 	} else {
