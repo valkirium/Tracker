@@ -157,8 +157,8 @@ func normstat(x, y string) string {
 				//fmt.Println("Ok")
 				i++
 			}
-			sum += 4
 		}
+		sum += 4
 	}
 	Deployments, err = clientset.AppsV1().Deployments("region-manager").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
