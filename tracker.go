@@ -257,7 +257,7 @@ func normstat(x, y string) string {
 		fmt.Printf("%d\t %s\n", index, pod.Name)
 		for _, condition := range pod.Status.Conditions {
 			fmt.Printf("\t%s: %s\n", condition.Type, condition.Status)
-			if condition.Type == "Initialized" && condition.Status == "True"
+			if condition.Type == "Initialized" && condition.Status == "True" {
 				i++
 			}
 			if condition.Type == "Ready" && condition.Status == "True" {
