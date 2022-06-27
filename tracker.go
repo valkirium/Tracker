@@ -27,20 +27,6 @@ func normstat(x, y string) string {
 	var sum int = 0
 	flag.StringVar(&ns, "namespace", "", "namespace")
 
-	// Bootstrap k8s configuration from local       Kubernetes config file
-	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
-	log.Println("Using kubeconfig file: ", kubeconfig)
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Create an rest client not targeting specific API version
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	nodes, err := clientset.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln("failed to get nodes:", err)
@@ -280,7 +266,37 @@ func normstat(x, y string) string {
 	}
 }
 
+//const (
+//	ns1  = "kube-system"
+//	ns2  = "region-manager"
+//	ns3  = "kubernetes-dashboard"
+//	ns4  = "auth-system"
+//	ns5  = "kube-csi-cinder"
+//	ns6  = "ingress-nginx"
+//	ns7  = "prometheus-monitoring"
+//	ns8  = "chaos-mesh"
+//	ns9  = "kube-csi-nfs"
+//	ns10 = "kube-downscaler"
+//	ns11 = "logging"
+//	ns12 = "vpn-gateway"
+//	ns13 = "project-operator"
+//)
+
 func main() {
+
+	// Bootstrap k8s configuration from local       Kubernetes config file
+	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
+	log.Println("Using kubeconfig file: ", kubeconfig)
+	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create an rest client not targeting specific API version
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Fatal(err)
+	}
 	var cloudup = normstat("Ok", "fail")
 	fmt.Println(cloudup)
 }
