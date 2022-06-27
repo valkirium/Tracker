@@ -27,6 +27,11 @@ func normstat(x, y string) string {
 	var sum int = 0
 	flag.StringVar(&ns, "namespace", "", "namespace")
 
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	nodes, err := clientset.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln("failed to get nodes:", err)
